@@ -15,11 +15,7 @@ namespace NewQA.Controllers
     {
         private QADBEntities db = new QADBEntities();
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+      
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -183,14 +179,14 @@ namespace NewQA.Controllers
                 currentUser.Question.Add(question);
 
                 db.SaveChanges();
-                return RedirectToAction("ShowQuestions");
+                return RedirectToAction("Index");
             }
 
 
             return RedirectToAction("LogIn");
         }
         //GET: ShowQestion 
-        public ActionResult ShowQuestions(int id = 1, int sortType = 0)
+        public ActionResult Index(int id = 1, int sortType = 0)
         {
             var cookieValue = Request.Cookies["userId"] == null ? "" : Request.Cookies["userId"].Value.ToString();
             if (cookieValue != "")
@@ -218,7 +214,7 @@ namespace NewQA.Controllers
         public ActionResult LogOut()
         {
             Response.Cookies["userId"].Expires = DateTime.Now.AddDays(-1);
-            return RedirectToAction("ShowQuestions");
+            return RedirectToAction("Index");
         }
 
         //GET: logIn
@@ -248,7 +244,7 @@ namespace NewQA.Controllers
             Response.AppendCookie(cookie);
             ViewBag.UserId = new SelectList(db.AppUser, "id", "name");
            
-            return RedirectToAction("ShowQuestions");
+            return RedirectToAction("Index");
         }
 
 
@@ -272,14 +268,14 @@ namespace NewQA.Controllers
         public ActionResult ShowNewestQuestion() 
         {
             var result = db.Database.SqlQuery<Question>("showNewestQuestion").ToList();
-            return RedirectToAction("ShowQuestions",new { sortType = 1 });
+            return RedirectToAction("Index",new { sortType = 1 });
         }
 
         //GET:
         public ActionResult ShowMostAnsweredQuestion()
         {
             var result = db.Database.SqlQuery<Question>("MostAnsweredQuestion").ToList();
-            return RedirectToAction("ShowQuestions" ,new { sortType = 2 });
+            return RedirectToAction("Index" ,new { sortType = 2 });
         }
 
         //Post: VoteQuestionUp 

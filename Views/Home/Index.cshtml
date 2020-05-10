@@ -1,31 +1,115 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model List<Question>
+@{
+    ViewBag.Title = "ShowQestion";
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QandA</title>
+    <link href="~/Content/showQuestion.css" rel="stylesheet" />
+</head>
+<body>
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+    <div class="login">
+        @if (ViewBag.CurrentUser == null)
+        {
+            
+          @Html.ActionLink("LogIn", "LogIn")
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        }
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+   
+    <div class="mycontainer">
+
+        <div class="leftpart">
+            @if (ViewBag.CurrentUser != null)
+            {
+                <div>
+                    <h3>CurrentUser:@ViewBag.CurrentUser.name</h3>
+                    <h3>Reputation:@ViewBag.CurrentUser.reputation</h3>
+                </div>
+
+                <div>
+                    @Html.ActionLink("LogOut", "LogOut")
+                </div>
+
+
+            }
+            else
+            {
+                <div>
+
+                    <h3>Welcome to .Net Q&A wed</h3>
+                    <h3>please login</h3>
+
+                </div>
+            }
+
+        </div>
+       
+
+        @if (Model != null)
+        {
+    <div class="allquestions">
+
+        <div class="askquestion">
+            <h3 class="title">All Questions</h3>
+            <h3>@Html.ActionLink("Ask Question", "AskQuestion")</h3>
+        </div>
+        <div>
+
+            <h3>@Html.ActionLink("Newest Question", "ShowNewestQuestion")</h3>
+            <h3>@Html.ActionLink("Most Answered Question", "ShowMostAnsweredQuestion")</h3>
+        </div>
+        @foreach (var q in Model)
+        {
+            <div class="question">
+
+                <div class="votesandAnswersnum">
+                    <div class="votesnum">
+                        <p class="votesnumbers">@q.Qvote.Count()</p>
+                        <p>Votes</p>
+                    </div>
+
+                    <div class="answernum">
+                        <p class="answernumbers">@q.Answer.Count()</p>
+                        <div class="answerword">Answers</div>
+                    </div>
+                </div>
+
+                <div class="questioncontent">
+                    <h3>@Html.ActionLink(q.title, "ShowQandA", new { id = q.id })</h3>
+                    <p>@q.body</p>
+                    <p>@q.time</p>
+                    <div class="tags">
+                        @foreach (var tag in q.Tag_Question)
+                        {
+                            <span>@Html.ActionLink(tag.Tag.name, "ShowQuestionInTag", new { id = tag.Tag.id }, new { @class = "tag" })</span>
+                        }
+                    </div>
+                </div>
+                <div class="userinfo">
+                    <h5>@q.AppUser.name</h5>
+                    <p>@q.AppUser.reputation</p>
+                </div>
+
+            </div>
+        }
+        <div class="pagenums">
+            @for (var i = 1; i <= ViewBag.Total; i++)
+            {
+                <div class="page">@Html.ActionLink(i.ToString(), "ShowQuestions", new { id = i })</div>
+            }
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        }
+
+        <div class="rightpart">
+        <img src="~/Content/imgs/true.png" class="img">
+        </div>
     </div>
-</div>
+    
+</body>
+</html>

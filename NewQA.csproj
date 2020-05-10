@@ -238,7 +238,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Questions\Create.cshtml" />
     <Content Include="Views\Questions\Delete.cshtml" />
     <Content Include="Views\Questions\Details.cshtml" />
@@ -274,7 +273,7 @@
     <Content Include="Views\Tag_Question\Details.cshtml" />
     <Content Include="Views\Tag_Question\Edit.cshtml" />
     <Content Include="Views\Tag_Question\Index.cshtml" />
-    <Content Include="Views\Home\ShowQuestions.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\ShowQandA.cshtml" />
     <Content Include="Views\Home\ShowQuestionInTag.cshtml" />
     <Content Include="Views\Home\ClickUpBotton.cshtml" />
