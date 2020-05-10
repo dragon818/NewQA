@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "AskQuestion";
+}
+
+<h2>AskQuestion</h2>
+
+<div>
+    <h3>Your Question</h3>
+    <div>
+        @using (Html.BeginForm())
+        {
+
+            <div>
+                Title:@Html.TextBox("QuestionTitle")
+
+            </div>
+            <div>
+                Body:@Html.TextBox("QuestionBody")
+            </div>
+
+            <div>
+                Tag1 : @Html.DropDownList("TagId1")
+            </div>
+            <br />
+            <div>
+                Tag2 : @Html.DropDownList("TagId2")
+            </div>
+            <br />
+            <div>
+                Tag3 : @Html.DropDownList("TagId3")
+            </div>
+            <br />
+
+
+            <input type="submit" value="Post A Question" class="btn btn-default" />
+
+        }
+
+       
+
+
+
+    </div>
+
+</div>

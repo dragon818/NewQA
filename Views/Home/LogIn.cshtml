@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "LogIn";
+}
+
+<h2>LogIn</h2>
+
+<div>
+    @using (Html.BeginForm())
+    {
+
+        <div>
+            User:@Html.DropDownList("UserId")
+        </div>
+        <input type="submit" value="Login" class="btn btn-default" />
+    }
+</div>

@@ -1,0 +1,751 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QADBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Acomment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="answer_id" Type="int" Nullable="false" />
+          <Property Name="body" Type="varchar(max)" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="body" Type="varchar(max)" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AppUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="reputation" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Avote">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="answer_id" Type="int" Nullable="false" />
+          <Property Name="status" Type="bit" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Qcomment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="body" Type="varchar(max)" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar(max)" Nullable="false" />
+          <Property Name="body" Type="varchar(max)" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Qvote">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status" Type="bit" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tag_Question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="tag_id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Acomment_Acomment">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="Acomment" Type="Self.Acomment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Acomment">
+              <PropertyRef Name="answer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Acomment_AppUser">
+          <End Role="AppUser" Type="Self.AppUser" Multiplicity="1" />
+          <End Role="Acomment" Type="Self.Acomment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Acomment">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_Answer">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_AppUser">
+          <End Role="AppUser" Type="Self.AppUser" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Avote_Answer">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="Avote" Type="Self.Avote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Avote">
+              <PropertyRef Name="answer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Avote_AppUser">
+          <End Role="AppUser" Type="Self.AppUser" Multiplicity="1" />
+          <End Role="Avote" Type="Self.Avote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Avote">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Qcomment" Type="Self.Qcomment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Qcomment">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Qcomment_AppUser">
+          <End Role="AppUser" Type="Self.AppUser" Multiplicity="1" />
+          <End Role="Qcomment" Type="Self.Qcomment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Qcomment">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_User">
+          <End Role="AppUser" Type="Self.AppUser" Multiplicity="1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Qvote_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Qvote" Type="Self.Qvote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Qvote">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tag_Question_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Tag_Question" Type="Self.Tag_Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tag_Question">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tag_Question_Tag">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+          <End Role="Tag_Question" Type="Self.Tag_Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tag_Question">
+              <PropertyRef Name="tag_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vote_User">
+          <End Role="AppUser" Type="Self.AppUser" Multiplicity="1" />
+          <End Role="Qvote" Type="Self.Qvote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Qvote">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QADBModelStoreContainer">
+          <EntitySet Name="Acomment" EntityType="Self.Acomment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppUser" EntityType="Self.AppUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Avote" EntityType="Self.Avote" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Qcomment" EntityType="Self.Qcomment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Qvote" EntityType="Self.Qvote" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tag_Question" EntityType="Self.Tag_Question" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Acomment_Acomment" Association="Self.FK_Acomment_Acomment">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="Acomment" EntitySet="Acomment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Acomment_AppUser" Association="Self.FK_Acomment_AppUser">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Acomment" EntitySet="Acomment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_Answer" Association="Self.FK_Answer_Answer">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_AppUser" Association="Self.FK_Answer_AppUser">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Avote_Answer" Association="Self.FK_Avote_Answer">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="Avote" EntitySet="Avote" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Avote_AppUser" Association="Self.FK_Avote_AppUser">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Avote" EntitySet="Avote" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Question" Association="Self.FK_Comment_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Qcomment" EntitySet="Qcomment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Qcomment_AppUser" Association="Self.FK_Qcomment_AppUser">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Qcomment" EntitySet="Qcomment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_User" Association="Self.FK_Question_User">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Qvote_Question" Association="Self.FK_Qvote_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Qvote" EntitySet="Qvote" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tag_Question_Question" Association="Self.FK_Tag_Question_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Tag_Question" EntitySet="Tag_Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tag_Question_Tag" Association="Self.FK_Tag_Question_Tag">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="Tag_Question" EntitySet="Tag_Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vote_User" Association="Self.FK_Vote_User">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Qvote" EntitySet="Qvote" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QADBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Acomment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="answer_id" Type="Int32" Nullable="false" />
+          <Property Name="body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK_Acomment_Acomment" FromRole="Acomment" ToRole="Answer" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AppUser" Relationship="QADBModel.FK_Acomment_AppUser" FromRole="Acomment" ToRole="AppUser" />
+        </EntityType>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Acomment" Relationship="Self.FK_Acomment_Acomment" FromRole="Answer" ToRole="Acomment" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Answer_Answer" FromRole="Answer" ToRole="Question" />
+          <NavigationProperty Name="AppUser" Relationship="Self.FK_Answer_AppUser" FromRole="Answer" ToRole="AppUser" />
+          <NavigationProperty Name="Avote" Relationship="QADBModel.FK_Avote_Answer" FromRole="Answer" ToRole="Avote" />
+          </EntityType>
+        <EntityType Name="AppUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="reputation" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK_Answer_AppUser" FromRole="AppUser" ToRole="Answer" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Question_User" FromRole="AppUser" ToRole="Question" />
+          <NavigationProperty Name="Acomment" Relationship="QADBModel.FK_Acomment_AppUser" FromRole="AppUser" ToRole="Acomment" />
+          <NavigationProperty Name="Qcomment" Relationship="QADBModel.FK_Qcomment_AppUser" FromRole="AppUser" ToRole="Qcomment" />
+          <NavigationProperty Name="Qvote" Relationship="QADBModel.FK_Vote_User" FromRole="AppUser" ToRole="Qvote" />
+          <NavigationProperty Name="Avote" Relationship="QADBModel.FK_Avote_AppUser" FromRole="AppUser" ToRole="Avote" />
+        </EntityType>
+        <EntityType Name="Qcomment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Comment_Question" FromRole="Qcomment" ToRole="Question" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AppUser" Relationship="QADBModel.FK_Qcomment_AppUser" FromRole="Qcomment" ToRole="AppUser" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK_Answer_Answer" FromRole="Question" ToRole="Answer" />
+          <NavigationProperty Name="AppUser" Relationship="Self.FK_Question_User" FromRole="Question" ToRole="AppUser" />
+          <NavigationProperty Name="Qcomment" Relationship="Self.FK_Comment_Question" FromRole="Question" ToRole="Qcomment" />
+          <NavigationProperty Name="Tag_Question" Relationship="Self.FK_Tag_Question_Question" FromRole="Question" ToRole="Tag_Question" />
+          <NavigationProperty Name="Qvote" Relationship="QADBModel.FK_Qvote_Question" FromRole="Question" ToRole="Qvote" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Tag_Question" Relationship="Self.FK_Tag_Question_Tag" FromRole="Tag" ToRole="Tag_Question" />
+        </EntityType>
+        <EntityType Name="Tag_Question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="tag_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Tag_Question_Question" FromRole="Tag_Question" ToRole="Question" />
+          <NavigationProperty Name="Tag" Relationship="Self.FK_Tag_Question_Tag" FromRole="Tag_Question" ToRole="Tag" />
+        </EntityType>
+        <Association Name="FK_Acomment_Acomment">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="Acomment" Type="Self.Acomment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Acomment">
+              <PropertyRef Name="answer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_Answer">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_AppUser">
+          <End Role="AppUser" Type="Self.AppUser" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_User">
+          <End Role="AppUser" Type="Self.AppUser" Multiplicity="1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Qcomment" Type="Self.Qcomment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Qcomment">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tag_Question_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Tag_Question" Type="Self.Tag_Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tag_Question">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tag_Question_Tag">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+          <End Role="Tag_Question" Type="Self.Tag_Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tag_Question">
+              <PropertyRef Name="tag_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QADBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Acomment" EntityType="Self.Acomment" />
+          <EntitySet Name="Answer" EntityType="Self.Answer" />
+          <EntitySet Name="AppUser" EntityType="Self.AppUser" />
+          <EntitySet Name="Qcomment" EntityType="Self.Qcomment" />
+          <EntitySet Name="Question" EntityType="Self.Question" />
+          <EntitySet Name="Tag" EntityType="Self.Tag" />
+          <EntitySet Name="Tag_Question" EntityType="Self.Tag_Question" />
+          <AssociationSet Name="FK_Acomment_Acomment" Association="Self.FK_Acomment_Acomment">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="Acomment" EntitySet="Acomment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_Answer" Association="Self.FK_Answer_Answer">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_AppUser" Association="Self.FK_Answer_AppUser">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_User" Association="Self.FK_Question_User">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Question" Association="Self.FK_Comment_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Qcomment" EntitySet="Qcomment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tag_Question_Question" Association="Self.FK_Tag_Question_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Tag_Question" EntitySet="Tag_Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tag_Question_Tag" Association="Self.FK_Tag_Question_Tag">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="Tag_Question" EntitySet="Tag_Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Acomment_AppUser" Association="QADBModel.FK_Acomment_AppUser">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Acomment" EntitySet="Acomment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Qcomment_AppUser" Association="QADBModel.FK_Qcomment_AppUser">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Qcomment" EntitySet="Qcomment" />
+          </AssociationSet>
+          <EntitySet Name="Qvote" EntityType="QADBModel.Qvote" />
+          <AssociationSet Name="FK_Vote_User" Association="QADBModel.FK_Vote_User">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Qvote" EntitySet="Qvote" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Qvote_Question" Association="QADBModel.FK_Qvote_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Qvote" EntitySet="Qvote" />
+          </AssociationSet>
+          <EntitySet Name="Avote" EntityType="QADBModel.Avote" />
+          <AssociationSet Name="FK_Avote_Answer" Association="QADBModel.FK_Avote_Answer">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="Avote" EntitySet="Avote" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Avote_AppUser" Association="QADBModel.FK_Avote_AppUser">
+            <End Role="AppUser" EntitySet="AppUser" />
+            <End Role="Avote" EntitySet="Avote" />
+          </AssociationSet>
+          </EntityContainer>
+        <Association Name="FK_Acomment_AppUser">
+          <End Type="QADBModel.AppUser" Role="AppUser" Multiplicity="1" />
+          <End Type="QADBModel.Acomment" Role="Acomment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Acomment">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Qcomment_AppUser">
+          <End Type="QADBModel.AppUser" Role="AppUser" Multiplicity="1" />
+          <End Type="QADBModel.Qcomment" Role="Qcomment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Qcomment">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Qvote">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status" Type="Boolean" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AppUser" Relationship="QADBModel.FK_Vote_User" FromRole="Qvote" ToRole="AppUser" />
+          <NavigationProperty Name="Question" Relationship="QADBModel.FK_Qvote_Question" FromRole="Qvote" ToRole="Question" />
+        </EntityType>
+        <Association Name="FK_Vote_User">
+          <End Type="QADBModel.AppUser" Role="AppUser" Multiplicity="1" />
+          <End Type="QADBModel.Qvote" Role="Qvote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Qvote">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Qvote_Question">
+          <End Type="QADBModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="QADBModel.Qvote" Role="Qvote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Qvote">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Avote">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="answer_id" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="Boolean" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Answer" Relationship="QADBModel.FK_Avote_Answer" FromRole="Avote" ToRole="Answer" />
+          <NavigationProperty Name="AppUser" Relationship="QADBModel.FK_Avote_AppUser" FromRole="Avote" ToRole="AppUser" />
+        </EntityType>
+        <Association Name="FK_Avote_Answer">
+          <End Type="QADBModel.Answer" Role="Answer" Multiplicity="1" />
+          <End Type="QADBModel.Avote" Role="Avote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Avote">
+              <PropertyRef Name="answer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Avote_AppUser">
+          <End Type="QADBModel.AppUser" Role="AppUser" Multiplicity="1" />
+          <End Type="QADBModel.Avote" Role="Avote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Avote">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QADBModelStoreContainer" CdmEntityContainer="QADBEntities">
+          <EntitySetMapping Name="Acomment">
+            <EntityTypeMapping TypeName="QADBModel.Acomment">
+              <MappingFragment StoreEntitySet="Acomment">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="answer_id" ColumnName="answer_id" />
+                <ScalarProperty Name="body" ColumnName="body" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Answer">
+            <EntityTypeMapping TypeName="QADBModel.Answer">
+              <MappingFragment StoreEntitySet="Answer">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="body" ColumnName="body" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppUser">
+            <EntityTypeMapping TypeName="QADBModel.AppUser">
+              <MappingFragment StoreEntitySet="AppUser">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="reputation" ColumnName="reputation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Qcomment">
+            <EntityTypeMapping TypeName="QADBModel.Qcomment">
+              <MappingFragment StoreEntitySet="Qcomment">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="body" ColumnName="body" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Question">
+            <EntityTypeMapping TypeName="QADBModel.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="body" ColumnName="body" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tag">
+            <EntityTypeMapping TypeName="QADBModel.Tag">
+              <MappingFragment StoreEntitySet="Tag">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tag_Question">
+            <EntityTypeMapping TypeName="QADBModel.Tag_Question">
+              <MappingFragment StoreEntitySet="Tag_Question">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="tag_id" ColumnName="tag_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Qvote">
+            <EntityTypeMapping TypeName="QADBModel.Qvote">
+              <MappingFragment StoreEntitySet="Qvote">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Avote">
+            <EntityTypeMapping TypeName="QADBModel.Avote">
+              <MappingFragment StoreEntitySet="Avote">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="answer_id" ColumnName="answer_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

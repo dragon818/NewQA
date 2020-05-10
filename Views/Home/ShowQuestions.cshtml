@@ -1,0 +1,115 @@
+﻿@model List<Question>
+@{
+    ViewBag.Title = "ShowQestion";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QandA</title>
+    <link href="~/Content/showQuestion.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="login">
+        @if (ViewBag.CurrentUser == null)
+        {
+            
+          @Html.ActionLink("LogIn", "LogIn")
+
+        }
+    </div>
+   
+    <div class="mycontainer">
+
+        <div class="leftpart">
+            @if (ViewBag.CurrentUser != null)
+            {
+                <div>
+                    <h3>CurrentUser:@ViewBag.CurrentUser.name</h3>
+                    <h3>Reputation:@ViewBag.CurrentUser.reputation</h3>
+                </div>
+
+                <div>
+                    @Html.ActionLink("LogOut", "LogOut")
+                </div>
+
+
+            }
+            else
+            {
+                <div>
+
+                    <h3>Welcome to .Net Q&A wed</h3>
+                    <h3>please login</h3>
+
+                </div>
+            }
+
+        </div>
+       
+
+        @if (Model != null)
+        {
+    <div class="allquestions">
+
+        <div class="askquestion">
+            <h3 class="title">All Questions</h3>
+            <h3>@Html.ActionLink("Ask Question", "AskQuestion")</h3>
+        </div>
+        <div>
+
+            <h3>@Html.ActionLink("Newest Question", "ShowNewestQuestion")</h3>
+            <h3>@Html.ActionLink("Most Answered Question", "ShowMostAnsweredQuestion")</h3>
+        </div>
+        @foreach (var q in Model)
+        {
+            <div class="question">
+
+                <div class="votesandAnswersnum">
+                    <div class="votesnum">
+                        <p class="votesnumbers">@q.Qvote.Count()</p>
+                        <p>Votes</p>
+                    </div>
+
+                    <div class="answernum">
+                        <p class="answernumbers">@q.Answer.Count()</p>
+                        <div class="answerword">Answers</div>
+                    </div>
+                </div>
+
+                <div class="questioncontent">
+                    <h3>@Html.ActionLink(q.title, "ShowQandA", new { id = q.id })</h3>
+                    <p>@q.body</p>
+                    <p>@q.time</p>
+                    <div class="tags">
+                        @foreach (var tag in q.Tag_Question)
+                        {
+                            <span>@Html.ActionLink(tag.Tag.name, "ShowQuestionInTag", new { id = tag.Tag.id }, new { @class = "tag" })</span>
+                        }
+                    </div>
+                </div>
+                <div class="userinfo">
+                    <h5>@q.AppUser.name</h5>
+                    <p>@q.AppUser.reputation</p>
+                </div>
+
+            </div>
+        }
+        <div class="pagenums">
+            @for (var i = 1; i <= ViewBag.Total; i++)
+            {
+                <div class="page">@Html.ActionLink(i.ToString(), "ShowQuestions", new { id = i })</div>
+            }
+        </div>
+    </div>
+        }
+
+        <div class="rightpart">
+        <img src="~/Content/imgs/true.png" class="img">
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,220 @@
+﻿@model Question
+@{
+    ViewBag.Title = "ShowQandA";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QandA</title>
+    <link href="~/Content/showqanda.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="login">
+        @if (ViewBag.CurrentUser == null)
+        {
+
+            @Html.ActionLink("LogIn", "LogIn")
+
+        }
+    </div>
+
+    <div class="mycontainer">
+        <div class="leftpart">
+            @if (ViewBag.CurrentUser != null)
+            {
+                <div>
+                    <h3>CurrentUser:@ViewBag.CurrentUser.name</h3>
+                    <h3>Reputation:@ViewBag.CurrentUser.reputation</h3>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <h3>Welcome to .Net Q&A wed</h3>
+                    <h3>please login</h3>
+                </div>
+                <div>
+                    @Html.ActionLink("LogOut", "LogOut")
+                </div>
+            }
+        </div>
+        <div class="middlepart">
+            <div class="askquestion">
+                <h3 class="title">Question Detial</h3>
+                <h3>@Html.ActionLink("Ask Question", "AskQuestion")</h3>
+            </div>
+
+            <div class="questiondetial">
+                <div class="questionpart">
+                    <div class="voteforquestion">
+                        <div>
+
+                            @using (Html.BeginForm("VoteQuestionUp", "Home", new { QuestionId = Model.id }))
+                            {
+                                <input type="submit" value="UP" class="btn btn-default" />
+                            }
+                        </div>
+
+                        <h4>@ViewBag.Count</h4>
+                        <div>
+                            @using (Html.BeginForm("VoteQuestionDown", "Home", new { QuestionId = Model.id, }))
+                            {
+                                <input type="submit" value="DOWN" class="btn btn-default" />
+                            }
+                        </div>
+                    </div>
+                    <div class="questioncontent">
+                        <h2>@Model.title</h2>
+                        <p>@Model.body</p>
+                        <p>@Model.time</p>
+                        <div class="tags">
+                            @foreach (var tag in Model.Tag_Question)
+                            {
+                                <span>@Html.ActionLink(tag.Tag.name, "ShowQuestionInTag", new { id = tag.Tag.id }, new { @class = "tag" })</span>
+
+                            }
+                        </div>
+
+                    </div>
+
+                    <div class="userinfo">
+                        <h3>@Model.AppUser.name</h3>
+                        <p>@Model.AppUser.reputation</p>
+                    </div>
+                </div>
+                <div class="qusetioncomment">
+                    @Html.ActionLink("Comment", "ShowQusetionComment", new { qid = Model.id })
+                    @if (ViewBag.ShowComment == true)
+                    {
+                        <div>
+                            <h3>Your Comment</h3>
+                            <div>
+                                @using (Html.BeginForm("CreateQuestionComment", "Home", new { qid = Model.id }))
+                                {
+
+                                    <div>
+                                        @Html.TextBox("qCommentBody")
+                                    </div>
+                                    <input type="submit" value="Post Comment" class="btn btn-default" />
+                                }
+                            </div>
+
+                        </div>
+
+                    }
+                </div>
+                <div class="commentforquestion">
+                    @foreach (var qv in Model.Qcomment)
+                    {
+                        <div class="commentdetial">
+                           
+                            <p>Comment Content:@qv.body</p>
+                            <p>Comment By:@qv.AppUser.name   Reputation:@qv.AppUser.reputation</p>
+                            
+                        </div>
+                    }
+                </div>
+                <h3>Answers</h3>
+                <div class="answersforthequestion">
+                    @foreach (var a in Model.Answer)
+                    {
+                        <div class="answerandcomment">
+                            <div class="answerdetial">
+                                <div class="voteforanswer">
+                                    <div>
+                                        @using (Html.BeginForm("VoteAnswerUp", "Home", new { AnswerId = a.id, QuestionId = Model.id }))
+                                        {
+                                            <input type="submit" value="Up" class="btn btn-default" />
+                                        }
+                                    </div>
+                                    <h4>@(a.Avote.Count(av => av.status == true) - a.Avote.Count(av => av.status == false))</h4>
+                                    <div>
+                                        @using (Html.BeginForm("VoteAnswerDown", "Home", new { AnswerId = a.id, QuestionId = Model.id }))
+                                        {
+                                            <input type="submit" value="DOWN" class="btn btn-default" />
+                                        }
+                                    </div>
+                                </div>
+                                <div class="answerbody">
+                                    <p>@a.body</p>
+                                    <p>@a.time</p>
+                                </div>
+                                <div class="userinfo">
+                                    <h3>@a.AppUser.name</h3>
+                                    <p>@a.AppUser.reputation</p>
+                                </div>
+                            </div>
+
+                            <div class="commentforanswerlink">
+                                @Html.ActionLink("Comment", "ShowAnswerComment", new { qId = a.question_id, aId = a.id })
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="commentforanswer">
+
+                            @foreach (var answercomment in a.Acomment)
+                            {
+                                <div>
+                                    <p>Comment Content: @answercomment.body</p>
+                                    <p>Comment By:@answercomment.AppUser.name Reputation :@answercomment.AppUser.reputation</p>
+                                    
+                                </div>
+
+                            }
+
+                            <div class="commentinfo">
+
+                                @if (ViewBag.AnswerId == a.id)
+                                {
+
+                                    <h3>Your Comment</h3>
+                                    <div>
+                                        @using (Html.BeginForm("CreateAnswerComment", "Home", new { aid = a.id, qid = Model.id }))
+                                        {
+
+                                            <div>
+                                                @Html.TextBox("aCommentBody")
+                                            </div>
+                                            <input type="submit" value="Post Comment on Answer" class="btn btn-default" />
+                                        }
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+                <div class="createanswer">
+                    <h3>Your Answer</h3>
+                    <div>
+                        @using (Html.BeginForm("CreateAnswer", "Home", new { qid = Model.id }))
+                        {
+
+                            <div>
+                                @Html.TextArea("answerBody", new { @class = "textarea" })
+                            </div>
+                            <input type="submit" value="Answer" class="btn btn-default" />
+
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="rightpart">
+            <img src="~/Content/imgs/true.png" class="img">
+        </div>
+    </div>
+   
+</body>
+</html>
+

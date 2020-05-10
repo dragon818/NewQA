@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="39172658b60a43c9a9700ba260d30e19" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="QADBModel.Acomment" Width="1.5" PointX="8" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QADBModel.Answer" Width="1.5" PointX="2.875" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QADBModel.AppUser" Width="1.5" PointX="8.125" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QADBModel.Qcomment" Width="1.5" PointX="8.375" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QADBModel.Question" Width="1.5" PointX="2.625" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QADBModel.Tag" Width="1.5" PointX="2.625" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QADBModel.Tag_Question" Width="1.5" PointX="2.625" PointY="13.5" IsExpanded="true" />
+        <AssociationConnector Association="QADBModel.FK_Acomment_Acomment" ManuallyRouted="false" />
+        <AssociationConnector Association="QADBModel.FK_Answer_Answer" ManuallyRouted="false" />
+        <AssociationConnector Association="QADBModel.FK_Answer_AppUser" ManuallyRouted="false" />
+        <AssociationConnector Association="QADBModel.FK_Question_User" ManuallyRouted="false" />
+        <AssociationConnector Association="QADBModel.FK_Comment_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="QADBModel.FK_Tag_Question_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="QADBModel.FK_Tag_Question_Tag" ManuallyRouted="false" />
+        <AssociationConnector Association="QADBModel.FK_Acomment_AppUser" />
+        <AssociationConnector Association="QADBModel.FK_Qcomment_AppUser" />
+        <EntityTypeShape EntityType="QADBModel.Qvote" Width="1.5" PointX="5.75" PointY="10.125" />
+        <AssociationConnector Association="QADBModel.FK_Vote_User" />
+        <AssociationConnector Association="QADBModel.FK_Qvote_Question" />
+        <EntityTypeShape EntityType="QADBModel.Avote" Width="1.5" PointX="5.75" PointY="6.375" />
+        <AssociationConnector Association="QADBModel.FK_Avote_Answer" />
+        <AssociationConnector Association="QADBModel.FK_Avote_AppUser" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
