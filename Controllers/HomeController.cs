@@ -1,7 +1,9 @@
 ﻿using Microsoft.Ajax.Utilities;
+using NewQA.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
@@ -15,21 +17,9 @@ namespace NewQA.Controllers
     {
         private QADBEntities db = new QADBEntities();
 
+
+
       
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
         public ActionResult ShowQusetionComment(int qid) 
         {
             return RedirectToAction("ShowQandA", new { id = qid, ShowComment = true });
@@ -130,15 +120,20 @@ namespace NewQA.Controllers
         // GET:
         public ActionResult AskQuestion()
         {
-          
-            ViewBag.TagId1 = new SelectList(db.Tag, "id", "name");
-            ViewBag.TagId2 = new SelectList(db.Tag, "id", "name");
-            ViewBag.TagId3 = new SelectList(db.Tag, "id", "name");
+            var checkList = new List<CheckModel>();
+
+            var tags = db.Tag.ToList();
+
+            for (var i =0; i< tags.Count(); i++) 
+            {
+                checkList.Add(new CheckModel { Id = tags[i].id, Name = tags[i].name, Checked = false });
+            }
+         
             var cookieValue = Request.Cookies["userId"] == null ? "" : Request.Cookies["userId"].Value.ToString();
             if (cookieValue != "")
             {
                 ViewBag.CurrentUser = db.AppUser.Find(int.Parse(cookieValue));
-                return View();
+                return View(checkList);
             }
 
 
@@ -146,12 +141,9 @@ namespace NewQA.Controllers
         }
         // POST: askQestion
         [HttpPost]
-        public ActionResult AskQuestion(string QuestionTitle, string QuestionBody, int TagId1, int TagId2, int TagId3)
+        public ActionResult AskQuestion(string QuestionTitle, string QuestionBody, List<CheckModel> CheckList)
         {
-            ViewBag.TagId1 = new SelectList(db.Tag, "id", "name");
-            ViewBag.TagId2 = new SelectList(db.Tag, "id", "name");
-            ViewBag.TagId3 = new SelectList(db.Tag, "id", "name");
-
+       
             var cookieValue = Request.Cookies["userId"] == null ? "" : Request.Cookies["userId"].Value.ToString();
             if (cookieValue != "")
             {
@@ -162,18 +154,16 @@ namespace NewQA.Controllers
                 question.title = QuestionTitle;
                 question.body = QuestionBody;
                 question.user_id = int.Parse(cookieValue);
-
-                var tagIds = new List<int>();
-                tagIds.Add(TagId1);
-                tagIds.Add(TagId2);
-                tagIds.Add(TagId3);
-
-                foreach (var id in tagIds) 
+               
+                foreach (var tag in CheckList) 
                 {
-                    var tq = new Tag_Question();
-                    tq.tag_id = id;
-                    tq.question_id = question.id;
-                    question.Tag_Question.Add(tq);
+                    if (tag.Checked) 
+                    {
+                        var tq = new Tag_Question();
+                        tq.tag_id = tag.Id;
+                        tq.question_id = question.id;
+                        question.Tag_Question.Add(tq);
+                    } 
                 }
                 
                 currentUser.Question.Add(question);
