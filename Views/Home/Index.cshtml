@@ -100,7 +100,7 @@
         <div class="pagenums">
             @for (var i = 1; i <= ViewBag.Total; i++)
             {
-                <div class="page">@Html.ActionLink(i.ToString(), "ShowQuestions", new { id = i })</div>
+                <div class="page">@Html.ActionLink(i.ToString(), "index", new { id = i })</div>
             }
         </div>
     </div>
